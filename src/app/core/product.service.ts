@@ -4,19 +4,23 @@ import { map, Observable, of } from 'rxjs';
 
 import { Product, Review } from './product.model';
 
-interface ProductResponse {
-  products: Product[];
+interface BackendProduct {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'https://dummyjson.com/products';
+  private readonly baseUrl = 'http://localhost:8080/api/products';
 
-  getProducts(limit = 20): Observable<Product[]> {
+  getProducts(_limit = 20): Observable<Product[]> {
     return this.http
-      .get<ProductResponse>(`${this.baseUrl}?limit=${limit}`)
-      .pipe(map((response) => response.products ?? []));
+      .get<BackendProduct[]>(this.baseUrl)
+      .pipe(map((products) => products.map((product) => this.product(product))));
   }
 
   searchProducts(query: string): Observable<Product[]> {
@@ -25,12 +29,27 @@ export class ProductService {
       return of([]);
     }
     return this.http
-      .get<ProductResponse>(`${this.baseUrl}/search?q=${encodeURIComponent(trimmed)}&limit=20`)
-      .pipe(map((response) => response.products ?? []));
+      .get<BackendProduct[]>(`${this.baseUrl}?search=${encodeURIComponent(trimmed)}`)
+      .pipe(map((products) => products.map((product) => this.product(product))));
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.baseUrl}/${id}`);
+    return this.http.get<BackendProduct>(`${this.baseUrl}/${id}`)
+      .pipe(map((product) => this.product(product)));
+  }
+
+  private product(product: BackendProduct): Product {
+    return {
+      id: product.id,
+      title: product.name,
+      description: product.description,
+      price: product.price,
+      rating: 4.5,
+      stock: product.quantity,
+      category: 'SmartCart',
+      thumbnail: `https://placehold.co/500x360/e0e7ff/1e3a8a?text=${encodeURIComponent(product.name)}`,
+      images: []
+    };
   }
 
   getReviews(productId: number): Review[] {

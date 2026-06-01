@@ -13,10 +13,10 @@ import { ProductService } from '../core/product.service';
   template: `
     <section class="hero">
       <div>
-        <span class="chip">Skyline specials</span>
+        <span class="chip">SmartCart catalog</span>
         <span class="chip secondary-chip">Product list</span>
         <h1>Shop the everyday essentials</h1>
-        <p>Bright colors, real products, and quick delivery. Everything you need in one place.</p>
+        <p>Browse inventory managed by the SmartCart product microservice.</p>
       </div>
     </section>
 
@@ -62,7 +62,7 @@ import { ProductService } from '../core/product.service';
             <img [src]="imageFor(product)" [alt]="product.title" loading="lazy" />
             <div class="product-meta">
               <span class="chip">{{ formatCategory(product.category) }}</span>
-              <span class="rating">★ {{ product.rating | number: '1.1-1' }}</span>
+              <span class="rating">&#9733; {{ product.rating | number: '1.1-1' }}</span>
             </div>
             <h3>{{ product.title }}</h3>
             <p>{{ product.description }}</p>

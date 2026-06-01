@@ -1,0 +1,32 @@
+server:
+  port: 8083
+spring:
+  datasource:
+    url: jdbc:h2:mem:smartcart_orders;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+smartcart:
+  clients:
+    product-url: http://localhost:8082
+    user-url: http://localhost:8081
+resilience4j:
+  circuitbreaker:
+    instances:
+      productService:
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+  retry:
+    instances:
+      productService:
+        max-attempts: 3
+        wait-duration: 300ms

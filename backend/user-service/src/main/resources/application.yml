@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: user-service
+  config:
+    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:h2:mem:smartcart_users;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081
+smartcart:
+  jwt:
+    secret: ${SMARTCART_JWT_SECRET:SmartCartTrainingProjectSecretKeyMustBeAtLeastThirtyTwoChars}
+    expiration-ms: 86400000
+  seed-users: true

@@ -11,7 +11,7 @@ import { AuthService } from '../core/auth.service';
     <section class="card logout-card">
       <span class="chip">Signed out</span>
       <h1>You are logged out</h1>
-      <p>Thanks for visiting Skyline Mart. Come back anytime.</p>
+      <p>Thanks for visiting SmartCart. Come back anytime.</p>
       <a routerLink="/login" class="primary-btn">Return to Login</a>
     </section>
   `

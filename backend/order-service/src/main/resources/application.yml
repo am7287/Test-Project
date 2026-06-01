@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: order-service
+  config:
+    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:h2:mem:smartcart_orders;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+server:
+  port: 8083
+smartcart:
+  clients:
+    product-url: http://localhost:8082
+    user-url: http://localhost:8081

@@ -1,42 +1,74 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "start",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
+      "label": "SmartCart: Install UI Dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
     },
     {
-      "type": "npm",
-      "script": "test",
+      "label": "SmartCart: Build UI",
+      "type": "shell",
+      "command": "npm run build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start UI",
+      "type": "shell",
+      "command": "npm start",
+      "options": { "cwd": "${workspaceFolder}" },
       "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Build Backend",
+      "type": "shell",
+      "command": "mvn clean test",
+      "options": { "cwd": "${workspaceFolder}\\backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start Config Server",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}\\backend\\config-server" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start User Service",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}\\backend\\user-service" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start Product Service",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}\\backend\\product-service" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start Order Service",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}\\backend\\order-service" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "SmartCart: Start API Gateway",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}\\backend\\api-gateway" },
+      "isBackground": true,
+      "problemMatcher": []
     }
   ]
 }

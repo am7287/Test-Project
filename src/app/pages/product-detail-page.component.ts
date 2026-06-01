@@ -65,7 +65,7 @@ import { ProductService } from '../core/product.service';
             <div class="review">
               <div class="review-head">
                 <strong>{{ review.name }}</strong>
-                <span>★ {{ review.rating }}</span>
+                <span>&#9733; {{ review.rating }}</span>
               </div>
               <p>{{ review.text }}</p>
             </div>

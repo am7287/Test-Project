@@ -3,18 +3,20 @@
     <div class="brand">
       <div class="logo">SM</div>
       <div>
-        <div class="brand-name">Skyline Mart</div>
-        <div class="brand-tag">Everything you need, in one place.</div>
+        <div class="brand-name">SmartCart</div>
+        <div class="brand-tag">E-Commerce Order Management System</div>
       </div>
     </div>
     <nav class="nav-links">
       @if (!(isLoggedIn$ | async)) {
         <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
       }
       <a routerLink="/products" routerLinkActive="active">Products</a>
       <a routerLink="/search" routerLinkActive="active">Search</a>
       <a routerLink="/cart" routerLinkActive="active">Cart</a>
       @if (isLoggedIn$ | async) {
+        <a routerLink="/orders" routerLinkActive="active">My Orders</a>
         <a routerLink="/logout" routerLinkActive="active">Logout</a>
       }
     </nav>

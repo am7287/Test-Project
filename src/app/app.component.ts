@@ -11,6 +11,7 @@ import { AuthService } from './core/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  readonly title = 'SmartCart';
   private readonly authService = inject(AuthService);
   protected readonly isLoggedIn$ = this.authService.isLoggedIn$;
 }

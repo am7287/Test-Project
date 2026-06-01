@@ -14,28 +14,28 @@ import { AuthService } from '../core/auth.service';
       <section class="card login-card">
         <div class="login-header">
           <span class="chip">Welcome back</span>
-          <h1>Login to Skyline Mart</h1>
-          <p>Use the demo credentials below to enter.</p>
+          <h1>Login to SmartCart</h1>
+          <p>Sign in to place orders and view order history.</p>
         </div>
 
         <form (ngSubmit)="handleLogin()" class="login-form">
           <label>
-            Email
-            <input type="email" [(ngModel)]="email" name="email" placeholder="demo@gmail.com" required />
+            Username
+            <input type="text" [(ngModel)]="username" name="username" placeholder="demo" required />
           </label>
 
           <label>
             Password
-            <input type="password" [(ngModel)]="password" name="password" placeholder="demo@123" required />
+            <input type="password" [(ngModel)]="password" name="password" placeholder="demo123" required />
           </label>
 
           <button type="submit" class="primary-btn">Login</button>
         </form>
 
         <div class="login-footer">
-          <p><strong>Demo:</strong> <span>demo&#64;gmail.com</span> / <span>demo&#64;123</span></p>
+          <p><strong>Customer demo:</strong> demo / demo123 &nbsp; <strong>Admin:</strong> admin / admin123</p>
           @if (showError) {
-            <p class="error-text">Email or password is incorrect. Try the demo credentials.</p>
+            <p class="error-text">Username or password is incorrect. Ensure the backend services are running.</p>
           }
         </div>
       </section>
@@ -43,7 +43,7 @@ import { AuthService } from '../core/auth.service';
   `
 })
 export class LoginPageComponent {
-  email = '';
+  username = '';
   password = '';
   showError = false;
 
@@ -51,10 +51,9 @@ export class LoginPageComponent {
 
   handleLogin(): void {
     this.showError = false;
-    if (this.authService.login(this.email, this.password)) {
-      this.router.navigate(['/products']);
-    } else {
-      this.showError = true;
-    }
+    this.authService.login(this.username, this.password).subscribe({
+      next: () => this.router.navigate(['/products']),
+      error: () => this.showError = true
+    });
   }
 }

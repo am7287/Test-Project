@@ -1,8 +1,10 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 import { CartItem, CartService } from '../core/cart.service';
+import { OrderService } from '../core/order.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -52,15 +54,22 @@ import { CartItem, CartService } from '../core/cart.service';
             <span>Total</span>
             <strong>\${{ getTotal(items) }}</strong>
           </div>
-          <button class="primary-btn">Proceed to checkout</button>
+          <button class="primary-btn" (click)="checkout(items)" [disabled]="placingOrder">Place order</button>
         </section>
       }
+    }
+    @if (message) {
+      <p class="status-text" [class.error-text]="checkoutFailed">{{ message }}</p>
     }
   `
 })
 export class CartPageComponent {
   private readonly cartService = inject(CartService);
+  private readonly orderService = inject(OrderService);
   readonly items$ = this.cartService.items$;
+  placingOrder = false;
+  checkoutFailed = false;
+  message = '';
 
   getTotal(items: CartItem[]): number {
     return this.cartService.getTotal(items);
@@ -80,5 +89,23 @@ export class CartPageComponent {
 
   clearCart(): void {
     this.cartService.clear();
+  }
+
+  checkout(items: CartItem[]): void {
+    this.placingOrder = true;
+    this.checkoutFailed = false;
+    this.message = '';
+    forkJoin(items.map((item) => this.orderService.placeOrder(item.product.id, item.quantity))).subscribe({
+      next: () => {
+        this.cartService.clear();
+        this.message = 'Order placed successfully. View it under My Orders.';
+        this.placingOrder = false;
+      },
+      error: () => {
+        this.message = 'Order could not be placed. Check stock or try again later.';
+        this.checkoutFailed = true;
+        this.placingOrder = false;
+      }
+    });
   }
 }

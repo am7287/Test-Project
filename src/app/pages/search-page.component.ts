@@ -15,7 +15,7 @@ import { ProductService } from '../core/product.service';
       <div>
         <span class="chip">Search bar</span>
         <h1>Find the product you want</h1>
-        <p>Search by product name, brand, or category for a quick match.</p>
+        <p>Search the SmartCart catalog by product name or description.</p>
       </div>
       <div class="search-row">
         <input type="text" placeholder="Try phone, laptop, perfume..." [(ngModel)]="query" />
@@ -27,20 +27,17 @@ import { ProductService } from '../core/product.service';
       <div class="suggestion-card card">
         <h3>Popular right now</h3>
         <div class="suggestion-tags">
-          <button class="tag-btn" (click)="quickSearch('phone')">Phones</button>
-          <button class="tag-btn" (click)="quickSearch('laptop')">Laptops</button>
-          <button class="tag-btn" (click)="quickSearch('fragrance')">Fragrance</button>
-          <button class="tag-btn" (click)="quickSearch('sunglasses')">Sunglasses</button>
-          <button class="tag-btn" (click)="quickSearch('shirt')">Shirts</button>
-          <button class="tag-btn" (click)="quickSearch('shoe')">Shoes</button>
+          <button class="tag-btn" (click)="quickSearch('headphones')">Headphones</button>
+          <button class="tag-btn" (click)="quickSearch('watch')">Watch</button>
+          <button class="tag-btn" (click)="quickSearch('keyboard')">Keyboard</button>
         </div>
       </div>
       <div class="suggestion-card card">
         <h3>Shopping tips</h3>
         <ul class="tip-list">
-          <li>Search by brand for faster matches.</li>
-          <li>Use short keywords like “phone” or “shoe”.</li>
-          <li>Try category terms like “fragrance”.</li>
+          <li>Search by a short product keyword.</li>
+          <li>Stock levels update whenever an order is placed.</li>
+          <li>Administrators maintain the product catalog.</li>
         </ul>
       </div>
     </section>
@@ -56,7 +53,7 @@ import { ProductService } from '../core/product.service';
             <img [src]="imageFor(product)" [alt]="product.title" loading="lazy" />
             <div class="product-meta">
               <span class="chip">{{ product.category ?? 'General' }}</span>
-              <span class="rating">★ {{ product.rating | number: '1.1-1' }}</span>
+              <span class="rating">&#9733; {{ product.rating | number: '1.1-1' }}</span>
             </div>
             <h3>{{ product.title }}</h3>
             <p>{{ product.description }}</p>

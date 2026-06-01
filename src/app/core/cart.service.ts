@@ -10,7 +10,7 @@ export interface CartItem {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private readonly storageKey = 'skyline-mart-cart';
+  private readonly storageKey = 'smartcart-cart';
   private readonly itemsSubject = new BehaviorSubject<CartItem[]>(this.load());
 
   readonly items$ = this.itemsSubject.asObservable();

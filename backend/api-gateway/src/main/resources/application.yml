@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      routes:
+        - id: users
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/**,/api/users/**
+        - id: products
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/products/**
+        - id: orders
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/orders/**
+server:
+  port: 8080
+smartcart:
+  jwt:
+    secret: ${SMARTCART_JWT_SECRET:SmartCartTrainingProjectSecretKeyMustBeAtLeastThirtyTwoChars}

@@ -1,20 +1,31 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+
+export interface AuthResponse {
+  token: string;
+  id: number;
+  username: string;
+  role: 'USER' | 'ADMIN';
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly storageKey = 'skyline-mart-auth';
+  private readonly http = inject(HttpClient);
+  private readonly storageKey = 'smartcart-auth';
+  private readonly baseUrl = 'http://localhost:8080/api/auth';
   private readonly loggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
 
   readonly isLoggedIn$ = this.loggedInSubject.asObservable();
 
-  login(email: string, password: string): boolean {
-    const ok = email.trim().toLowerCase() === 'demo@gmail.com' && password === 'demo@123';
-    if (ok) {
-      localStorage.setItem(this.storageKey, 'true');
-      this.loggedInSubject.next(true);
-    }
-    return ok;
+  login(username: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, { username, password })
+      .pipe(tap((response) => this.store(response)));
+  }
+
+  register(username: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, { username, password })
+      .pipe(tap((response) => this.store(response)));
   }
 
   logout(): void {
@@ -23,6 +34,24 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem(this.storageKey) === 'true';
+    return !!this.current()?.token;
+  }
+
+  token(): string | null {
+    return this.current()?.token ?? null;
+  }
+
+  private store(response: AuthResponse): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(response));
+    this.loggedInSubject.next(true);
+  }
+
+  private current(): AuthResponse | null {
+    try {
+      const value = localStorage.getItem(this.storageKey);
+      return value ? JSON.parse(value) as AuthResponse : null;
+    } catch {
+      return null;
+    }
   }
 }

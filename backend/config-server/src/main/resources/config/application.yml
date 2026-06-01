@@ -1,0 +1,9 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+smartcart:
+  jwt:
+    secret: ${SMARTCART_JWT_SECRET:SmartCartTrainingProjectSecretKeyMustBeAtLeastThirtyTwoChars}
+    expiration-ms: 86400000
